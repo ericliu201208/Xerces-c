@@ -199,7 +199,12 @@ WindowsFileMgr::openStdIn(MemoryManager* const manager)
     //  down this handle when its done with it. If we gave out the orignal,
     //  shutting it would prevent any further output.
     //
+#ifdef WINCE
+    // Refer to WceLib, GetStdHandle returns NULL
+    HANDLE stdInOrg = NULL; // ::GetStdHandle(STD_INPUT_HANDLE);
+#else
     HANDLE stdInOrg = ::GetStdHandle(STD_INPUT_HANDLE);
+#endif
     if (stdInOrg == INVALID_HANDLE_VALUE) {
         XMLCh stdinStr[] = {chLatin_s, chLatin_t, chLatin_d, chLatin_i, chLatin_n, chNull};
         ThrowXMLwithMemMgr1(XMLPlatformUtilsException, XMLExcepts::File_CouldNotOpenFile, stdinStr, manager);
@@ -320,6 +325,12 @@ WindowsFileMgr::fileWrite(FileHandle f, XMLSize_t byteCount, const XMLByte* buff
 XMLCh*
 WindowsFileMgr::getFullPath(const XMLCh* const srcPath, MemoryManager* const manager)
 {
+#ifdef WINCE
+    // WinCE has no relative path
+    // srcPath should not be a relative path.
+    // Actually XMLPlatformUtils::getFullPath is NOT referenced/called at all
+    return (XMLCh*)srcPath;
+#else
     //
     //  If we are on NT, then use wide character APIs, else use ASCII APIs.
     //  We have to do it manually since we are only built in ASCII mode from
@@ -355,12 +366,19 @@ WindowsFileMgr::getFullPath(const XMLCh* const srcPath, MemoryManager* const man
         // Return a transcoded copy of the path
         return XMLString::transcode(tmpPath, manager);
     }
+#endif
 }
 
 
 XMLCh*
 WindowsFileMgr::getCurrentDirectory(MemoryManager* const manager)
 {
+#ifdef WINCE
+    // WinCE does not have current directory at all
+    // Actually this function will never be called.
+    // Refer to XMLPlatformUtils::getCurrentDirectory()
+    return NULL;
+#else
     //
     //  If we are on NT, then use wide character APIs, else use ASCII APIs.
     //  We have to do it manually since we are only built in ASCII mode from
@@ -390,6 +408,7 @@ WindowsFileMgr::getCurrentDirectory(MemoryManager* const manager)
         // Return a transcoded copy of the path
         return XMLString::transcode(tmpPath, manager);
     }
+#endif
 }
 
 

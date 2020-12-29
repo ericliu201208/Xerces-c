@@ -34,6 +34,7 @@ int strnicmp(const char* str1, const char* str2, size_t count)
 #if HAVE_STRNCASECMP
 	return (count == 0) ? 0 : strncasecmp( str1, str2, count);
 #else
-	#error Need implementation of strnicmp compatibility function
+	// #error Need implementation of strnicmp compatibility function
+    return _strnicmp(str1, str2, count);
 #endif
 }

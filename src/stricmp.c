@@ -34,7 +34,8 @@ int stricmp(const char* str1, const char* str2)
 #if HAVE_STRCASECMP
 	return strcasecmp(str1, str2);
 #else
-	#error Need implementation of stricmp compatibility function
+	// #error Need implementation of stricmp compatibility function
+    return  _stricmp(str1, str2);
 #endif
 
 }

@@ -32,6 +32,9 @@
 #include <locale.h>
 #include <float.h>
 #include <errno.h>
+#ifdef WINCE
+extern int errno;
+#endif
 
 XERCES_CPP_NAMESPACE_BEGIN
 
@@ -426,6 +429,10 @@ void XMLAbstractDoubleFloat::normalizeZero(XMLCh* const inData)
 
 void XMLAbstractDoubleFloat::normalizeDecimalPoint(char* const toNormal)
 {
+#ifdef WINCE
+    // do nothing, always use "." as decimal point delimiter
+    // actually WinCE devices are using only "."as decimal point delimiter
+#else
     // find the locale-specific decimal point delimiter
     lconv* lc = localeconv();
     char delimiter = *lc->decimal_point;
@@ -439,6 +446,7 @@ void XMLAbstractDoubleFloat::normalizeDecimalPoint(char* const toNormal)
             *period = delimiter;
         }
     }
+#endif
 }
 
 

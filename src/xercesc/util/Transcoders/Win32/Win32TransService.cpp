@@ -52,7 +52,11 @@ static const XMLCh gMyServiceId[] =
 void _wcsupr(LPWSTR str)
 {
     int nLen=XMLString::stringLen(str);
+#ifdef WINCE
+    ::LCMapStringW(GetUserDefaultLCID(), LCMAP_UPPERCASE, str, nLen, str, nLen);
+#else
     ::LCMapStringW( GetThreadLocale(), LCMAP_UPPERCASE, str, nLen, str, nLen);
+#endif
 }
 #endif
 
@@ -60,7 +64,11 @@ void _wcsupr(LPWSTR str)
 void _wcslwr(LPWSTR str)
 {
     int nLen=XMLString::stringLen(str);
+#ifdef WINCE
+    ::LCMapStringW( GetUserDefaultLCID(), LCMAP_LOWERCASE, str, nLen, str, nLen);
+#else
     ::LCMapStringW( GetThreadLocale(), LCMAP_LOWERCASE, str, nLen, str, nLen);
+#endif
 }
 #endif
 
@@ -104,8 +112,13 @@ int _wcsnicmp(LPCWSTR comp1, LPCWSTR comp2, unsigned int nLen)
     memcpy( secondBuf, comp2, otherLen * sizeof(XMLCh));
 
     // Then uppercase both strings, losing their case info.
+#ifdef WINCE
+    ::LCMapStringW( GetUserDefaultLCID(), LCMAP_UPPERCASE, (LPWSTR)firstBuf, len, (LPWSTR)firstBuf, len);
+    ::LCMapStringW( GetUserDefaultLCID(), LCMAP_UPPERCASE, (LPWSTR)secondBuf, otherLen, (LPWSTR)secondBuf, otherLen);
+#else
     ::LCMapStringW( GetThreadLocale(), LCMAP_UPPERCASE, (LPWSTR)firstBuf, len, (LPWSTR)firstBuf, len);
     ::LCMapStringW( GetThreadLocale(), LCMAP_UPPERCASE, (LPWSTR)secondBuf, otherLen, (LPWSTR)secondBuf, otherLen);
+#endif
 
     // Strings are equal until proven otherwise.
     while ( ( countChar < maxChars ) && ( !theResult ) )
@@ -162,10 +175,10 @@ bool isAlias(const   HKEY            encodingKey
 {
     DWORD theType;
     DWORD theSize = nameBufSz;
-    return (::RegQueryValueExA
+    return (::RegQueryValueExW
     (
         encodingKey
-        , "AliasForCharset"
+        , L"AliasForCharset"
         , 0
         , &theType
         , (LPBYTE)aliasBuf

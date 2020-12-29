@@ -1273,8 +1273,13 @@ void XMLScanner::scanProlog()
                     if (sawDocTypeDecl) {
                         emitError(XMLErrs::DuplicateDocTypeDecl);
                     }
-
+#ifdef WINCE
+                    // WinCE does NOT support env variables
+                    // Actually XERCES_DISABLE_DTD is not used at all
+                    const char* envvar = NULL; //getenv("XERCES_DISABLE_DTD");
+#else
                     const char* envvar = getenv("XERCES_DISABLE_DTD");
+#endif
                     if (fDisallowDTD || (envvar && !strcmp(envvar, "1"))) {
                     	emitError(XMLErrs::InvalidDocumentStructure);
                     }

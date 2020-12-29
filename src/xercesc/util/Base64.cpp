@@ -18,6 +18,9 @@
 // ---------------------------------------------------------------------------
 //  Includes
 // ---------------------------------------------------------------------------
+#ifdef WINCE
+#include <limits.h>
+#endif
 #include <xercesc/util/Base64.hpp>
 #include <xercesc/util/XMLString.hpp>
 #include <xercesc/util/Janitor.hpp>

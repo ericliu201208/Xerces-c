@@ -48,6 +48,10 @@
 #include <xercesc/util/TransService.hpp>
 #include <xercesc/util/NumberFormatException.hpp>
 
+#ifdef WINCE
+int errno;
+#endif
+
 XERCES_CPP_NAMESPACE_BEGIN
 
 /*** issues

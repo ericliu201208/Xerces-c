@@ -39,6 +39,9 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <assert.h>
+#ifdef WINCE
+extern int errno;
+#endif
 
 #include <xercesc/util/XMLString.hpp>
 #include <xercesc/util/ArrayIndexOutOfBoundsException.hpp>
