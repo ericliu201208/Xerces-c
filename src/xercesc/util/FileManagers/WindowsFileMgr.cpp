@@ -26,6 +26,10 @@
 #include <xercesc/util/XMLString.hpp>
 #include <xercesc/util/XMLUniDefs.hpp>
 
+#ifdef WINCE
+#include "wce_winbase.h"
+#endif
+
 #ifndef INVALID_SET_FILE_POINTER
 #define INVALID_SET_FILE_POINTER ((DWORD)-1)
 #endif
@@ -203,12 +207,7 @@ WindowsFileMgr::openStdIn(MemoryManager* const manager)
     //  down this handle when its done with it. If we gave out the orignal,
     //  shutting it would prevent any further output.
     //
-#ifdef WINCE
-    // Refer to WceLib, GetStdHandle returns NULL
-    HANDLE stdInOrg = NULL; // ::GetStdHandle(STD_INPUT_HANDLE);
-#else
     HANDLE stdInOrg = ::GetStdHandle(STD_INPUT_HANDLE);
-#endif
     if (stdInOrg == INVALID_HANDLE_VALUE) {
         XMLCh stdinStr[] = {chLatin_s, chLatin_t, chLatin_d, chLatin_i, chLatin_n, chNull};
         ThrowXMLwithMemMgr1(XMLPlatformUtilsException, XMLExcepts::File_CouldNotOpenFile, stdinStr, manager);
