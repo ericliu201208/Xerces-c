@@ -196,7 +196,7 @@ void BinHTTPURLInputStream::Initialize(MemoryManager* const manager)
 #ifdef WITH_IPV6
       gWinsockLib = LoadLibraryA("WS2_32");
 #else
-      gWinsockLib = LoadLibraryA("WSOCK32");
+      gWinsockLib = LoadLibraryW(L"WSOCK32");
 #endif
       if(gWinsockLib == NULL)
       {

@@ -122,6 +122,11 @@
 #	include <xercesc/util/Transcoders/Win32/Win32TransService.hpp>
 #endif
 
+#ifdef WINCE
+#include "winsock2.h"
+#include "wce_time.h"
+#endif
+
 XERCES_CPP_NAMESPACE_BEGIN
 
 // ---------------------------------------------------------------------------
@@ -708,7 +713,10 @@ unsigned long XMLPlatformUtils::getCurrentMillis()
 		ms = (unsigned long)(aTime.time*1000 + aTime.millitm);
 	#else
 		// Make this a warning instead?
-		#error No timing support is configured for this platform. You must configure it.
+		// #error No timing support is configured for this platform. You must configure it.
+        struct timeval aTime;
+        (void)wceex_gettimeofday(&aTime, NULL);
+        ms = (unsigned long) (aTime.tv_sec * 1000 + aTime.tv_usec / 1000);
 	#endif
 
 	return ms;

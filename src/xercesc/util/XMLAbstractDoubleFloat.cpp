@@ -33,7 +33,7 @@
 #include <float.h>
 #include <errno.h>
 #ifdef WINCE
-extern int errno;
+#include "wce_errno.h"
 #endif
 
 XERCES_CPP_NAMESPACE_BEGIN

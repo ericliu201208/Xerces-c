@@ -101,8 +101,8 @@ private :
     //      This map is shared unsynchronized among all threads of the process,
     //      which is cool since it will be read only once its initialized.
 
-    RefHashTableOf<CPMapEntry>    *fCPMap;
-    MemoryManager*  fManager;
+    RefHashTableOf<CPMapEntry>    *m_fCPMap;
+    MemoryManager*  m_fManager;
 };
 
 

@@ -1239,6 +1239,11 @@ if(XERCES_USE_FILEMGR_WINDOWS)
   list(APPEND libxerces_c_HEADERS ${winfmgr_headers})
 endif()
 
+if ( ${CMAKE_SYSTEM_NAME} MATCHES "WindowsCE" )
+  find_package(wcelibcex REQUIRED)
+  list(APPEND libxerces_c_DEPS "wcelibcex::wcelibcex")
+endif()
+
 # Windows resource.  With some additional work to clean it up, it
 # might be possible to use with Cygwin and MinGW.
 if(MSVC)

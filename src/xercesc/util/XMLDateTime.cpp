@@ -39,6 +39,10 @@
 #include <xercesc/util/Janitor.hpp>
 #include <xercesc/util/NumberFormatException.hpp>
 
+#ifdef WINCE
+#include "wce_time.h"
+#endif
+
 XERCES_CPP_NAMESPACE_BEGIN
 
 //
@@ -497,13 +501,23 @@ XMLDateTime::XMLDateTime(time_t epoch, bool duration, MemoryManager* const manag
     }
     else {
 #ifndef HAVE_GMTIME_R
+#ifdef WINCE
+        struct tm* ptime = wceex_gmtime(&epoch);
+#else
         struct tm* ptime=gmtime(&epoch);
+#endif
 #else
         struct tm res;
         struct tm* ptime=gmtime_r(&epoch,&res);
 #endif
         char timebuf[32];
+#ifdef WINCE
+        (void)_snprintf_s(timebuf, sizeof(timebuf), sizeof(timebuf) - 1, "%d-%d-%dT%d:%d:%d",
+                          ptime->tm_year, ptime->tm_mon, ptime->tm_mday,
+                          ptime->tm_hour, ptime->tm_min, ptime->tm_sec);
+#else
         strftime(timebuf,32,"%Y-%m-%dT%H:%M:%SZ",ptime);
+#endif
         XMLCh* timeptr = XMLString::transcode(timebuf);
         setBuffer(timeptr);
         XMLString::release(&timeptr);
@@ -579,8 +593,14 @@ time_t XMLDateTime::getEpoch(bool duration) const
         // Windows
         return mktime(&t) - _timezone;
 #else
+#ifdef WINCE
+        struct timezone tz;
+        (void)wceex_gettimeofday(NULL, &tz);
+        return wceex_mktime(&t) - tz.tz_minuteswest * 60;
+#else
         // Hopefully most others...?
         return mktime(&t) - timezone;
+#endif
 #endif
     }
 }

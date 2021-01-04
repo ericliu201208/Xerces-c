@@ -49,7 +49,7 @@
 #include <xercesc/util/NumberFormatException.hpp>
 
 #ifdef WINCE
-int errno;
+#include "wce_errno.h"
 #endif
 
 XERCES_CPP_NAMESPACE_BEGIN

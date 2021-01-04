@@ -39,8 +39,9 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <assert.h>
+
 #ifdef WINCE
-extern int errno;
+#include "wce_errno.h"
 #endif
 
 #include <xercesc/util/XMLString.hpp>

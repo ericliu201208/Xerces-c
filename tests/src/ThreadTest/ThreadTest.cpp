@@ -47,6 +47,10 @@
 #include <xercesc/internal/MemoryManagerImpl.hpp>
 #include <xercesc/util/OutOfMemoryException.hpp>
 
+#ifdef WINCE
+#include "wce_errno.h"
+#endif
+
 void clearFileInfoMemory();
 
 #ifdef HAVE_PTHREAD
@@ -119,8 +123,9 @@ void ThreadFuncs::startThread(ThreadFunc func, void *param)
 //------------------------------------------------------------------------------
 
 #include <Windows.h>
+#ifndef WINCE
 #include <process.h>
-
+#endif
 typedef DWORD (WINAPI *ThreadFunc)(void *);
 
 class ThreadFuncs           // This class isolates OS dependent threading

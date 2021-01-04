@@ -41,10 +41,10 @@ static bool isBackSlash(XMLCh c) {
 WindowsFileMgr::WindowsFileMgr()
 {
     // Figure out if we are on NT and save that flag for later use
-    OSVERSIONINFO   OSVer;
+    OSVERSIONINFOW   OSVer;
     OSVer.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-    ::GetVersionEx(&OSVer);
-    _onNT = (OSVer.dwPlatformId == VER_PLATFORM_WIN32_NT);
+    ::GetVersionExW(&OSVer);
+    _onNT = ((OSVer.dwPlatformId == VER_PLATFORM_WIN32_NT) || (OSVer.dwPlatformId == VER_PLATFORM_WIN32_CE));
 }
 
 
@@ -153,6 +153,9 @@ WindowsFileMgr::fileOpen(const XMLCh* fileName, bool toWrite, MemoryManager* con
     }
     else
     {
+        // For WinCE the following code is dead code
+        // Just comment off
+#ifndef WINCE
         //
         //  We are Win 95 / 98.  Take the Unicode file name back to (char *)
         //    so that we can open it.
@@ -169,6 +172,7 @@ WindowsFileMgr::fileOpen(const XMLCh* fileName, bool toWrite, MemoryManager* con
             , 0
             );
         manager->deallocate(tmpName);//delete [] tmpName;
+#endif
     }
 
     if (tmpUName)
