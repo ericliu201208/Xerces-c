@@ -331,11 +331,12 @@ Win32TransService::Win32TransService(MemoryManager* manager) :
     // Figure out if we are on XP or later and save that flag for later use.
     // We need this because of certain code page conversion calls.
     OSVERSIONINFOW   OSVer;
-    OSVer.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+    OSVer.dwOSVersionInfoSize = sizeof(OSVERSIONINFOW);
     ::GetVersionExW(&OSVer);
 
-    if ((OSVer.dwPlatformId == VER_PLATFORM_WIN32_NT) &&
-        (OSVer.dwMajorVersion > 5 || (OSVer.dwMajorVersion == 5 && OSVer.dwMinorVersion > 0)))
+    if ((OSVer.dwPlatformId == VER_PLATFORM_WIN32_CE) ||
+        ((OSVer.dwPlatformId == VER_PLATFORM_WIN32_NT) &&
+        (OSVer.dwMajorVersion > 5 || (OSVer.dwMajorVersion == 5 && OSVer.dwMinorVersion > 0))))
     {
         onXPOrLater = true;
     }

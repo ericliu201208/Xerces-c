@@ -46,7 +46,7 @@ WindowsFileMgr::WindowsFileMgr()
 {
     // Figure out if we are on NT and save that flag for later use
     OSVERSIONINFOW   OSVer;
-    OSVer.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+    OSVer.dwOSVersionInfoSize = sizeof(OSVERSIONINFOW);
     ::GetVersionExW(&OSVer);
     _onNT = ((OSVer.dwPlatformId == VER_PLATFORM_WIN32_NT) || (OSVer.dwPlatformId == VER_PLATFORM_WIN32_CE));
 }
@@ -418,6 +418,11 @@ WindowsFileMgr::getCurrentDirectory(MemoryManager* const manager)
 bool
 WindowsFileMgr::isRelative(const XMLCh* const toCheck, MemoryManager* const /*manager*/)
 {
+#ifdef WINCE
+    // No relative path on WinCE
+    return false;
+#endif
+
     // Check for pathological case of empty path
     if (!toCheck || !toCheck[0])
         return false;
