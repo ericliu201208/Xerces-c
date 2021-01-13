@@ -1,9 +1,0 @@
-[requires]
-wcelibcex/1.0.0-v1.0.1@leica/stable
-
-[build_requires]
-
-[imports]
-., * -> .
-
-[options]
