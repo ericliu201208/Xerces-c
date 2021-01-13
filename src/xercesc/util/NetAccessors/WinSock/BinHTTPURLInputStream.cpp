@@ -204,23 +204,44 @@ void BinHTTPURLInputStream::Initialize(MemoryManager* const manager)
       }
       else
       {
-          startup = (LPFN_WSASTARTUP) GetProcAddress(gWinsockLib,L"WSAStartup");
-          gWSACleanup = (LPFN_WSACLEANUP) GetProcAddress(gWinsockLib,L"WSACleanup");
-          gWShtons = (LPFN_HTONS) GetProcAddress(gWinsockLib,L"htons");
-          gWSsocket = (LPFN_SOCKET) GetProcAddress(gWinsockLib,L"socket");
-          gWSconnect = (LPFN_CONNECT) GetProcAddress(gWinsockLib,L"connect");
-          gWSsend = (LPFN_SEND) GetProcAddress(gWinsockLib,L"send");
-          gWSrecv = (LPFN_RECV) GetProcAddress(gWinsockLib,L"recv");
-          gWSshutdown = (LPFN_SHUTDOWN) GetProcAddress(gWinsockLib,L"shutdown");
-          gWSclosesocket = (LPFN_CLOSESOCKET) GetProcAddress(gWinsockLib,L"closesocket");
-#ifdef WITH_IPV6
-          gWSgetaddrinfo = (LPFN_GETADDRINFO) GetProcAddress(gWinsockLib,"getaddrinfo");
-          gWSfreeaddrinfo = (LPFN_FREEADDRINFO) GetProcAddress(gWinsockLib,"freeaddrinfo");
+#ifdef WINCE
+              startup = (LPFN_WSASTARTUP) GetProcAddress(gWinsockLib,L"WSAStartup");
+              gWSACleanup = (LPFN_WSACLEANUP) GetProcAddress(gWinsockLib,L"WSACleanup");
+              gWShtons = (LPFN_HTONS) GetProcAddress(gWinsockLib,L"htons");
+              gWSsocket = (LPFN_SOCKET) GetProcAddress(gWinsockLib,L"socket");
+              gWSconnect = (LPFN_CONNECT) GetProcAddress(gWinsockLib,L"connect");
+              gWSsend = (LPFN_SEND) GetProcAddress(gWinsockLib,L"send");
+              gWSrecv = (LPFN_RECV) GetProcAddress(gWinsockLib,L"recv");
+              gWSshutdown = (LPFN_SHUTDOWN) GetProcAddress(gWinsockLib,L"shutdown");
+              gWSclosesocket = (LPFN_CLOSESOCKET) GetProcAddress(gWinsockLib,L"closesocket");
+    #ifdef WITH_IPV6
+              gWSgetaddrinfo = (LPFN_GETADDRINFO) GetProcAddress(gWinsockLib,"getaddrinfo");
+              gWSfreeaddrinfo = (LPFN_FREEADDRINFO) GetProcAddress(gWinsockLib,"freeaddrinfo");
+    #else
+              gWSgethostbyname = (LPFN_GETHOSTBYNAME) GetProcAddress(gWinsockLib,L"gethostbyname");
+              gWSgethostbyaddr = (LPFN_GETHOSTBYADDR) GetProcAddress(gWinsockLib,L"gethostbyaddr");
+              gWSinet_addr = (LPFN_INET_ADDR) GetProcAddress(gWinsockLib,L"inet_addr");
+    #endif
 #else
-          gWSgethostbyname = (LPFN_GETHOSTBYNAME) GetProcAddress(gWinsockLib,L"gethostbyname");
-          gWSgethostbyaddr = (LPFN_GETHOSTBYADDR) GetProcAddress(gWinsockLib,L"gethostbyaddr");
-          gWSinet_addr = (LPFN_INET_ADDR) GetProcAddress(gWinsockLib,L"inet_addr");
+              startup = (LPFN_WSASTARTUP) GetProcAddress(gWinsockLib,"WSAStartup");
+              gWSACleanup = (LPFN_WSACLEANUP) GetProcAddress(gWinsockLib,"WSACleanup");
+              gWShtons = (LPFN_HTONS) GetProcAddress(gWinsockLib,"htons");
+              gWSsocket = (LPFN_SOCKET) GetProcAddress(gWinsockLib,"socket");
+              gWSconnect = (LPFN_CONNECT) GetProcAddress(gWinsockLib,"connect");
+              gWSsend = (LPFN_SEND) GetProcAddress(gWinsockLib,"send");
+              gWSrecv = (LPFN_RECV) GetProcAddress(gWinsockLib,"recv");
+              gWSshutdown = (LPFN_SHUTDOWN) GetProcAddress(gWinsockLib,"shutdown");
+              gWSclosesocket = (LPFN_CLOSESOCKET) GetProcAddress(gWinsockLib,"closesocket");
+    #ifdef WITH_IPV6
+              gWSgetaddrinfo = (LPFN_GETADDRINFO) GetProcAddress(gWinsockLib,"getaddrinfo");
+              gWSfreeaddrinfo = (LPFN_FREEADDRINFO) GetProcAddress(gWinsockLib,"freeaddrinfo");
+    #else
+              gWSgethostbyname = (LPFN_GETHOSTBYNAME) GetProcAddress(gWinsockLib,"gethostbyname");
+              gWSgethostbyaddr = (LPFN_GETHOSTBYADDR) GetProcAddress(gWinsockLib,"gethostbyaddr");
+              gWSinet_addr = (LPFN_INET_ADDR) GetProcAddress(gWinsockLib,"inet_addr");
+    #endif
 #endif
+
 
           if(startup == NULL
              || gWSACleanup == NULL

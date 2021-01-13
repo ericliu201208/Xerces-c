@@ -44,7 +44,11 @@ WindowsFileMgr::WindowsFileMgr()
     OSVERSIONINFOW   OSVer;
     OSVer.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
     ::GetVersionExW(&OSVer);
-    _onNT = ((OSVer.dwPlatformId == VER_PLATFORM_WIN32_NT) || (OSVer.dwPlatformId == VER_PLATFORM_WIN32_CE));
+#ifdef WINCE
+    _onNT = OSVer.dwPlatformId == VER_PLATFORM_WIN32_CE;
+#else
+    _onNT = OSVer.dwPlatformId == VER_PLATFORM_WIN32_NT;
+#endif
 }
 
 

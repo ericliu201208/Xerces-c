@@ -528,14 +528,17 @@ Win32TransService::Win32TransService(MemoryManager* manager) :
                         m_fCPMap->put((void*)newEntry->getEncodingName(), newEntry);
                     }
 #else
-                    int targetLen = ::MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, nameBuf, -1, NULL, 0);
+                    char*   pNameChar = new char[nameBufSz+1];
+                    strncpy(pNameChar,(const char*)nameBuf,nameBufSz);
+                    pNameChar[nameBufSz]='\0';
+                    int targetLen = ::MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, pNameChar, -1, NULL, 0);
                     if(targetLen!=0)
                     {
                         XMLCh* uniName = (XMLCh*) m_fManager->allocate
                         (
                             (targetLen + 1) * sizeof(XMLCh)
                         );//new XMLCh[targetLen + 1];
-                        ::MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, nameBuf, -1, (LPWSTR)uniName, targetLen);
+                        ::MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, pNameChar, -1, (LPWSTR)uniName, targetLen);
                         uniName[targetLen] = 0;
                         xmlch_wcsupr(uniName);
                         //
