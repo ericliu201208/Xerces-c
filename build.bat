@@ -38,7 +38,7 @@ if "%BUILD_IS_PERSONAL%" == "true" (
 
 set block_name=ConanPackageUpload
 echo ##teamcity[blockOpened name='%block_name%']
-if "%ARTIFACTORY_UPLOAD%" == "true" (
+if "%ARTIFACTORY_UPLOAD%" == "false" (
 	%conan_bin% remote add %ARTIFACTORY_REPOSITORY% %ARTIFACTORY_BASE_URL%/api/conan/conan-leica True --force ^
 	|| goto failure_upload
 	%conan_bin% upload -r %ARTIFACTORY_REPOSITORY% --force --all --check %conan_ref% ^
