@@ -1,4 +1,4 @@
-@echo on
+@echo off
 setlocal
 
 set SCRIPTDIR=%~dp0
@@ -27,7 +27,7 @@ echo ##teamcity[blockClosed name='%block_name%']
 
 set block_name=TestConanPackage
 echo ##teamcity[blockOpened name='%block_name%']
-call test_package\test.bat %target% %runtime_linkage% || goto failure
+::call tests\test.bat %target% %runtime_linkage% || goto failure
 echo ##teamcity[blockClosed name='%block_name%']
 
 
