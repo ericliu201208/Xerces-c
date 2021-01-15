@@ -14,5 +14,9 @@ object Project : Project({
 
     // Register Build Types in the Project
     allBuilds.buildTypes().forEach { buildType(it) }
+    // Disable editing of project and build settings from the UI to avoid issues with TeamCity
+    params {
+        param("teamcity.ui.settings.readOnly", "true")
+    }	
 })
 

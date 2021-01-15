@@ -8,7 +8,7 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.ParameterDisplay
 open class BaseBuildType(target: String) : BuildType() {
     init {
         // IDs can contain only alphanumeric characters and underscores
-        id("wince_adapter${target.replace("-", "_")}")
+        id("xerces${target.replace("-", "_")}")
         name = "xerces-${target}"
         buildNumberPattern = "%build.vcs.number%"
         enablePersonalBuilds = false

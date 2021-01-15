@@ -7,7 +7,7 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.commitStatusPu
 import jetbrains.buildServer.configs.kotlin.v2019_2.triggers.vcs
 
 object BuildChain : BuildType({
-    id("build_chain")
+    id("xerces_build_chain")
 
     name = "Xerces Build Chain"
     allowExternalStatus = true
