@@ -1,6 +1,0 @@
-# Generated teamcity xml files
-target/
-
-# IntelliJ IDEA integration
-*.iml
-.idea/
